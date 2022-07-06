@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="style.css" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/c2ddcff1e4.js" crossorigin="anonymous"></script>
+    </head>
+    <div class="page1">
+        <div class="navigation-column">
+            <i class="fa-solid fa-bars navigation-column__icon fa-2x"></i>
+            <i class="fa-solid fa-house navigation-column__icon"></i>
+            <i class="fa-solid fa-check navigation-column__icon"></i>
+            <i class="fa-solid fa-star navigation-column__icon"></i>
+            <i class="fa-solid fa-crown navigation-column__icon"></i>
+            <i class="fa-solid fa-user navigation-column__icon"></i>
+            <i class="fa-solid fa-comment navigation-column__icon"></i>
+            <i class="fa-solid fa-users navigation-column__icon"></i>
+            <i class="fa-solid fa-calendar-week navigation-column__icon"></i>
+        </div>
+        <div class="main">
+            <div class="search-bar">
+                <button class="btn search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <img>
+            </div>
+            <div class="tasks-header">
+                <p class="tasts-header__text">My Tasks</p>
+                <input type="text" class="tasks-header__input-for-new-task" id="input" placeholder="Your new task is ...">
+                <button class="btn tasks-header__button-add-new-task">Add Task</button>
+            </div>
+            <div class="all-tasks">
+                <div class="tasks" id="tasks">
+                </div>
+                <div class="tasks tasks-checked" id="tasks-checked">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</html>
