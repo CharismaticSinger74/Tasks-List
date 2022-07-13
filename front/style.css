@@ -90,11 +90,28 @@
 .task-checkbox {
     padding: 5px;
     margin-left: 5px;
+    border-radius: 5px;
+}
+
+.isChecked-true {
+    background-color: darkblue;
+    color: #fff;
+}
+
+.isChecked-true:hover {
+    background-color: orange;
+    color: black;
 }
 
 .task-text {
     padding: 5px;
     flex-grow: 1;
+}
+
+.task-date {
+    padding: 5px;
+    border-radius: 5px;
+    color: gray;
 }
 
 .task-button-delete {

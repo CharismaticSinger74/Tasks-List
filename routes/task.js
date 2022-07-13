@@ -23,4 +23,13 @@ router.delete('/:id', async (req, res) => {
     });
 })
 
+router.put('/:id', async (req, res) => {
+    const abc = await Task.find({_id: req.params.id}, {isChecked: 1, _id: 0})
+    const result = !abc[0].isChecked
+    await Task.updateOne({_id: req.params.id}, {isChecked: result});
+    res.status(201).json({
+        message: 'Updated'
+    })
+})
+
 module.exports = router;

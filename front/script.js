@@ -1,10 +1,10 @@
 const card = task => {
     return `
     <div class="task">
-        <button class="btn task-checkbox js-move"><i class="fa-solid fa-check"></i></button>
+        <button class="btn task-checkbox isChecked-${task.isChecked} js-check" data-id="${task._id}"><i class="fa-solid fa-check js-check" data-id="${task._id}"></i></button>
         <p class="task-text">${task.text}</p>
-        <small>${new Date(task.date).toLocaleDateString()}</small>
-        <button class="btn task-button-delete js-remove" data-id="${task._id}"">Delete</button>
+        <small class="task-date">${new Date(task.date).toLocaleDateString()}</small>
+        <button class="btn task-button-delete js-remove" data-id="${task._id}"><i class="fa-solid fa-trash js-remove" data-id="${task._id}"></i></button>
     </div>
     `
 };
@@ -12,11 +12,12 @@ const card = task => {
 let tasks = [];
 let headers;
 const BASE_URL = '/api/task'
-const taskIsChecked = true;
 
 class TaskApi {
     static fetch() {
-        return fetch(BASE_URL, {method: 'get'}).then(res => res.json())
+        return fetch(BASE_URL, {
+            method: 'get'
+        }).then(res => res.json())
     }
 
     static create(task) {
@@ -35,6 +36,12 @@ class TaskApi {
             method: 'delete'
         }).then(res => res.json())
     }
+
+    static update(id) {
+        return fetch(`${BASE_URL}/${id}`, {
+            method: 'put'
+        }).then(res => res.json());
+    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -42,8 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks = backendTasks.concat();
         renderTasks(tasks);
     })
-    document.querySelector('#input').addEventListener('click', onCreateTask);
+    document.querySelector('#input').addEventListener("keypress", (event)=> {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            onCreateTask();
+        }
+      });
+    document.querySelector('#createTask').addEventListener('click', onCreateTask);
     document.querySelector('#tasks').addEventListener('click', onDeleteTask);
+    document.querySelector('#tasks').addEventListener('click', onCheckTask);
 })
 
 function renderTasks(_tasks = []) {
@@ -53,7 +67,7 @@ function renderTasks(_tasks = []) {
         $tasks.innerHTML = _tasks.map(task => card(task)).join(' ')
     } else {
         $tasks.innerHTML = '';
-    }
+    } 
 }
 
 function onCreateTask() {
@@ -72,16 +86,24 @@ function onCreateTask() {
 
 function onDeleteTask(event) {
     if (event.target.classList.contains('js-remove')) {
-        const decision = confirm('Are you sure you want to delete this task?')
+        const id = event.target.getAttribute('data-id')
 
-        if (decision) {
-            const id = event.target.getAttribute('data-id')
+        TaskApi.remove(id).then(() => {
+            const taskIndex = tasks.findIndex(task => task._id === id)
+            tasks.splice(taskIndex, 1)
+            renderTasks(tasks)
+        })
+    }
+}
 
-            TaskApi.remove(id).then(() => {
-                const taskIndex = tasks.findIndex(task => task._id === id)
-                tasks.splice(taskIndex, 1)
-                renderTasks(tasks)
-            })
-        }
+function onCheckTask(event) {
+    if (event.target.classList.contains('js-check')) {
+        const id = event.target.getAttribute('data-id');
+        TaskApi.update(id).then(() => {
+            TaskApi.fetch().then(backendTasks => {
+                tasks = backendTasks.concat();
+                renderTasks(tasks);
+            });
+        });
     }
 }

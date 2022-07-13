@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const taskSchema = new Schema({
+const taskSchema = new mongoose.Schema({
     text: {
         type: String,
         require: true
     },
     date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        immutable: true
     },
     isChecked: {
         type: Boolean,
